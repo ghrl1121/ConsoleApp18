@@ -36,14 +36,14 @@ namespace ConsoleApp18
                     string use = ue.ToString();
                     string[] lines = { use };
                     File.WriteAllLines("exetr.lal", lines);
+                    //운영체제확인
+                    var processStartInfo = new ProcessStartInfo(@"C:\Windows\system32\DISM.exe", "/Online /Cleanup-image /Restorehealth");
+                    processStartInfo.UseShellExecute = true;
+                    Process.Start(processStartInfo);
                     //디스크 검사
                     var vet = new ProcessStartInfo(@"C:\Windows\system32\chkdsk.exe", "C: /f /r /x");
                     vet.UseShellExecute = true;
-                    var process = Process.Start(vet);
-                    //운영체제확인
-                    var processStartInfo = new ProcessStartInfo(@"C:\Windows\system32\DISM.exe", "/Online /Cleanup-image /Restorehealth");
-                    processStartInfo.UseShellExecute = false;
-                    process = Process.Start(processStartInfo);
+                    Process.Start(vet);
                 }
                 else
                 {
@@ -60,15 +60,15 @@ namespace ConsoleApp18
                 int ue = oneAfterYearDate.Day;
                 string use = ue.ToString();
                 string[] lines = { use };
-                File.WriteAllLines("exetr.lal", lines);
-                //디스크 검사
-                var vet = new ProcessStartInfo(@"C:\Windows\system32\chkdsk.exe", "C: /f /r /x");
-                vet.UseShellExecute = true;
-                var process = Process.Start(vet);
+                File.WriteAllLines("exetr.lal", lines);                
                 //운영체제확인
                 var processStartInfo = new ProcessStartInfo(@"C:\Windows\system32\DISM.exe", "/Online /Cleanup-image /Restorehealth");
                 processStartInfo.UseShellExecute = false;
-                process = Process.Start(processStartInfo);
+                Process.Start(processStartInfo);
+                //디스크 검사
+                var vet = new ProcessStartInfo(@"C:\Windows\system32\chkdsk.exe", "C: /f /r /x");
+                vet.UseShellExecute = true;
+                Process.Start(vet);
             }
 
         }
