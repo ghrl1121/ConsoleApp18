@@ -26,26 +26,24 @@ namespace ConsoleApp18
                 //비교하기 
                 int yue = bus.Day;
                 int stv = int.Parse(day);
-                su.Close();
                 if (yue == stv)
                 {
                     //같으면 디스크검사, 운영체제확인
                     //날짜 연장
-                    
                     DateTime nowDate = DateTime.Now;
                     DateTime oneAfterYearDate = nowDate.AddMonths(3);
                     int ue = oneAfterYearDate.Day;
                     string use = ue.ToString();
                     string[] lines = { use };
                     File.WriteAllLines("exetr.lal", lines);
-                    //수정
-                    string[] lines2 = {"@echo off","title 확인중...", @"cd C:\Windows\System32\","Dism.exe /Online /Cleanup-image /Restorehealth", "pause", "sfc /scannow", "pause", "cls","title 확인중...",@"cd C:\Windows\System32\","chkdsk.exe /f /r /x" , "pause" };
-                    File.WriteAllLines("comm.bat", lines2);  
-                    Process process =new Process();
-                    process.StartInfo.FileName = "comm.bat";
-                    process.Start();
-                    process.WaitForExit();
-                    File.Delete("comm.bat");
+                    //운영체제확인
+                    var processStartInfo = new ProcessStartInfo(@"C:\Windows\system32\DISM.exe", "/Online /Cleanup-image /Restorehealth");
+                    processStartInfo.UseShellExecute = true;
+                    Process.Start(processStartInfo);
+                    //디스크 검사
+                    var vet = new ProcessStartInfo(@"C:\Windows\system32\chkdsk.exe", "C: /f /r /x");
+                    vet.UseShellExecute = true;
+                    Process.Start(vet);
                 }
                 else
                 {
@@ -62,15 +60,15 @@ namespace ConsoleApp18
                 int ue = oneAfterYearDate.Day;
                 string use = ue.ToString();
                 string[] lines = { use };
-                File.WriteAllLines("exetr.lal", lines);
+                File.WriteAllLines("exetr.lal", lines);                
                 //운영체제확인
-                string[] lines2 = { "@echo off", "title 확인중...", @"cd C:\Windows\System32","Dism.exe /Online /Cleanup-image /Restorehealth", @"cd C:\Windows\System32", "sfc /scannow", "cls", "title 확인중...", @"cd C:\Windows\System32\","chkdsk.exe /f /r /x" };
-                File.WriteAllLines("comm.bat", lines2);
-                Process process = new Process();
-                process.StartInfo.FileName = "comm.bat";
-                process.Start();
-                process.WaitForExit();
-                File.Delete("comm.bat");
+                var processStartInfo = new ProcessStartInfo(@"C:\Windows\system32\DISM.exe", "/Online /Cleanup-image /Restorehealth");
+                processStartInfo.UseShellExecute = false;
+                Process.Start(processStartInfo);
+                //디스크 검사
+                var vet = new ProcessStartInfo(@"C:\Windows\system32\chkdsk.exe", "C: /f /r /x");
+                vet.UseShellExecute = true;
+                Process.Start(vet);
             }
 
         }
