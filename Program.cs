@@ -21,29 +21,39 @@ namespace ConsoleApp18
                 //파일 읽기
                 StreamReader su = new StreamReader("exetr.lal");
                 string day = su.ReadLine();
+                su.Close();
                 //현제 날짜
-                DateTime bus = DateTime.Now;
+                DateTime bus = DateTime.Today;
                 //비교하기 
-                int yue = bus.Day;
-                int stv = int.Parse(day);
-                if (yue == stv)
+                int yue = bus.Year; //현재 날짜
+                int stv = int.Parse(day);//들고온 날짜
+                if ( yue  >= stv ) //현재 날짜 >= 비교날짜
                 {
                     //같으면 디스크검사, 운영체제확인
                     //날짜 연장
-                    DateTime nowDate = DateTime.Now;
-                    DateTime oneAfterYearDate = nowDate.AddMonths(3);
-                    int ue = oneAfterYearDate.Day;
-                    string use = ue.ToString();
-                    string[] lines = { use };
+                    DateTime nowDate = DateTime.Today;
+                    nowDate = nowDate.AddMonths(30);
+                    object ue = nowDate.Year;
+                    string[] lines = { ue.ToString() };
                     File.WriteAllLines("exetr.lal", lines);
                     //운영체제확인
                     var processStartInfo = new ProcessStartInfo(@"C:\Windows\system32\DISM.exe", "/Online /Cleanup-image /Restorehealth");
-                    processStartInfo.UseShellExecute = true;
-                    Process.Start(processStartInfo);
+                    processStartInfo.UseShellExecute = false;
+                    Process process = Process.Start(processStartInfo);
+                    process.WaitForExit();
+                    process.Close();
+                    //복구
+                    var nepc = new ProcessStartInfo(@"C:\Windows\system32\Sfc.exe", "/SCANNOW");
+                    nepc.UseShellExecute = false;
+                    Process process1 = Process.Start(nepc);
+                    process1.WaitForExit();  
+                    process1.Close();                    
                     //디스크 검사
                     var vet = new ProcessStartInfo(@"C:\Windows\system32\chkdsk.exe", "C: /f /r /x");
-                    vet.UseShellExecute = true;
-                    Process.Start(vet);
+                    vet.UseShellExecute = false;
+                    Process process2 = Process.Start(vet);
+                    process2.WaitForExit();                    
+                    process2.Close();
                 }
                 else
                 {
@@ -55,20 +65,29 @@ namespace ConsoleApp18
             {
                 //초기 실행
                 //날짜 넣고
-                DateTime nowDate = DateTime.Now;
-                DateTime oneAfterYearDate = nowDate.AddMonths(3);
-                int ue = oneAfterYearDate.Day;
-                string use = ue.ToString();
-                string[] lines = { use };
-                File.WriteAllLines("exetr.lal", lines);                
+                DateTime nowDate = DateTime.Today;
+                nowDate = nowDate.AddMonths(30);
+                object ue = nowDate.Year;
+                string[] lines = { ue.ToString() };
+                File.WriteAllLines("exetr.lal", lines);
                 //운영체제확인
                 var processStartInfo = new ProcessStartInfo(@"C:\Windows\system32\DISM.exe", "/Online /Cleanup-image /Restorehealth");
                 processStartInfo.UseShellExecute = false;
-                Process.Start(processStartInfo);
+                Process process = Process.Start(processStartInfo);
+                process.WaitForExit();                
+                process.Close();
+                //복구
+                var nepc = new ProcessStartInfo(@"C:\Windows\system32\Sfc.exe", "/SCANNOW");
+                nepc.UseShellExecute = false;
+                Process process1 = Process.Start(nepc);
+                process1.WaitForExit();                
+                process1.Close();
                 //디스크 검사
                 var vet = new ProcessStartInfo(@"C:\Windows\system32\chkdsk.exe", "C: /f /r /x");
-                vet.UseShellExecute = true;
-                Process.Start(vet);
+                vet.UseShellExecute = false;
+                Process process2 = Process.Start(vet);
+                process2.WaitForExit();                
+                process2.Close();
             }
 
         }
