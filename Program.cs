@@ -29,7 +29,7 @@ namespace ConsoleApp18
                 int stv = int.Parse(day);//들고온 날짜
                 if ( yue  >= stv ) //현재 날짜 >= 비교날짜
                 {
-                    //같으면 디스크검사, 운영체제확인
+                    //비교날짜가 크거나 같으면 디스크검사, 운영체제확인, 복구
                     //날짜 연장
                     DateTime nowDate = DateTime.Today;
                     nowDate = nowDate.AddMonths(30);
